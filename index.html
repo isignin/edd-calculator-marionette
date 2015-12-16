@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EDD Calculator</title>
+	<link rel="icon" sizes="33x33" href="assets/img/favicon.png">
+    <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./assets/css/application.css" rel="stylesheet">
+    <link href="./assets/css/jquery-ui-1.10.0.custom.css" rel="stylesheet">
+  </head>
+
+  <body>
+   <div class="container">
+	    <div id="header-region"></div>
+
+	    <div id="main-region">
+		   <div id="menu-icons"></div>
+		   <div style="clear: left"></div>
+		   <div class="row">
+			 <div class="col-xs-5 col-md-5">
+	            <div id="input-box"></div>
+			 </div>
+			 <div class="col-xs-7 col-md-6"> 
+			    <div id="calc-result"></div>
+			 </div>
+   		     <br />
+         	 <div class="err-alert">
+         	    <div class="alert alert-danger">
+         	      <a href="#" class="close" aria-label="close">&times;</a>
+   				   <strong>ERROR! </strong> <span  id="myAlert"> </span>
+         	      </div>
+             </div>
+		   </div>		  
+	    </div>
+
+	    <div id="dialog-region"></div>
+    </div>
+   <!-- Modal -->
+   <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel">
+     <div class="modal-dialog" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+           <h4 class="modal-title" id="myModalLabel">EDD Calculator Instructions</h4>
+         </div>
+         <div class="modal-body">
+			 <div id="html-text"></div>
+         </div>
+		 <div class="modal-footer">
+		         <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+		 </div>		 
+       </div>
+     </div>
+   </div>
+   <div class="modal fade" id="visitsModal" tabindex="-1" role="dialog" aria-labelledby="visitsModalLabel">
+     <div class="modal-dialog" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+           <h4 class="modal-title" id="visitModalLabel">HOME VISIT SCHEDULE</h4>
+         </div>
+         <div class="modal-body" id="home_visit">
+			 <div id="html-visits">
+				 <div class="col-xs-5 col-md-6">
+					 <div id="biweekly_title"><strong>BI-WEEKLY HOME VISIT</strong></div>
+				    <div id="listings">
+					 	<table class='table'>
+							<thead>
+								<tr><th id='visit_no'>Visit</th><th class='visit_planned'>Planned Date</th></tr>
+							</thead>
+							<tbody>
+						       <tr><td colspan="2"><span id="no_dates">No dates Calculated yet</span></td>
+							</tbody>
+						</table>		   
+					</div>
+					<div id="dose-final"><span id="label9">Date of final dose </span> : <span id="final-dose"> </span></div>		
+				 </div>	
+				 <div class="col-xs-7 col-md-6">
+					 <div id="bp_monitoring"><strong>BP MONITORING</strong></div>
+					 <div id="bp_monitor">
+					 	<table class='table'>
+							<thead>
+								<tr><th class='monitor_visit'>Visit</th><th class='visit_planned'>Planned Date</th></tr>
+							</thead>
+							<tbody id="test">
+								<tr><td>16-20 <span class="weeks">Weeks</span></td><td id="bp_1"> </td></tr>
+								<tr><td>24-28 <span class="weeks">weeks</span></td><td id="bp_2"> </td></tr>
+								<tr><td>32-34 <span class="weeks">weeks</span></td><td id="bp_3"> </td></tr>
+								<tr><td>36 <span class="weeks">weeks</span></td><td id="bp_4"> </td></tr>
+								<tr><td>38 <span class="weeks">weeks</span></td><td id="bp_5"> </td></tr>
+								<tr><td>40 <span class="weeks">weeks</span></td><td id="bp_6"> </td></tr>
+								<tr><td>42 <span class="weeks">weeks</span></td><td id="bp_7"> </td></tr>
+							</tbody>
+						  </table>			
+					 </div>
+					 <div id="hb_monitoring"><strong>HB MONITORING</strong></div>
+					 <div id="hb_monitor">
+					 	<table class='table'>
+							<thead>
+								<tr><th class='monitor_visit' style="width: 35%">Visit</th><th class='visit_planned'>Planned Date</th></tr>
+							</thead>
+							<tbody>
+								<tr><td id="hb_monitor1">4 weeks after randomization</td><td id="hb_1"> </td></tr>
+								<tr><td id="hb_monitor2">26 weeks GA</td><td id="hb_2"> </td></tr>
+							</tbody>
+						  </table>			
+					 </div>
+				 </div>	 
+			 </div>
+         </div>
+		 <div class="modal-footer">
+		         <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+		 </div>		 
+       </div>
+     </div>
+    <script type="text/template" id="header-template">
+  	   <div id="logo"><img src="assets/img/logo.png"></div>  
+       <h1 id="main_title"><span id="appTitle">EDD Calculator </span><small> Ver 0.6.1</small></h1>
+  	   <div class="row">
+          <div id="calc-type">
+  	        <button id="initial" class="btn btn-xs btn-primary">Initial</button>
+  	        <button id="randomization" class="btn btn-xs btn-primary">Randomization</button>
+           </div>
+		</div>   
+    </script>
+
+    <script type="text/template" id="menuIcons-template">
+	  <div id="buttons">
+		 <img src="assets/img/en-icon.png"  id="english" title="English"> 
+		 <img src="assets/img/fr-icon.png"  id="french" title="Française"> 
+	     <img src="assets/img/sync-icon.png"  id="sync" title="Sync for Updates">
+	     <a data-toggle="modal" data-target="#helpModal"><img src="assets/img/help_icon.png" id="help" title="Click for Instructions"></a> 
+	  </div>
+    </script>
+
+    <script type="text/template" id="inputs-template">
+	  <div class="question-block" style="padding-top: 30px">
+        <div class="question" id="today">Today's Date: </div>
+        <input type="text" id="current_date" readonly>
+	  </div>
+      <div class="question-block">
+        <div class="question" id="LMPDate">Date of LMP: </div>
+		<div class="aspQ">(ASP01 Q.A7 <span class="word-or">or</span> ASP05 Q.A1)</div>
+        <input type="text" id="lmp_date" class="datepicker"><br />
+		<input type="checkbox" id="lmp_date_unknown"> <span id="unknown">Unknown</span>
+	 </div>
+	 <div class="fullCalculator">
+	     <div class="question-block">
+		    <div class="question" id="USDate">Date of US Exam: </div>
+			<div class="aspQ">(ASP05 Q.B2)</div>
+		    <input type="text" id="us_date" class="datepicker">
+	     </div>
+	     <div class="question-block">
+ 		    <div class="question" id="GA-US">GA by US: </div>
+			<div class="aspQ">(ASP05 Q.B3)</div>
+ 		    <input type="number" id="ga_us_weeks" class="gestational_us" min="6" max="14"> <span id="labelWeeks">Weeks</span> 
+			<input type="number" id="ga_us_days" class="gestational_us" min="0" max="6"> <span id="labelDays">Days</span>
+ 		 </div>
+	     <div class="question-block">
+ 		        <div class="question" id="DateRandomization">Date of Randomization: </div>
+			    <div class="aspQ">(ASP05 Q.C1)</div>
+ 		        <input type="text" id="randomize_date" class="datepicker">
+ 	     </div>
+	 </div>	  
+     <div class="question-block">	 
+	     <button id="calculate" class="btn btn-warning">Calculate</button>&nbsp 
+		 <button id="clear" class="btn btn-success">Clear</button>
+     </div>
+    </script>
+	
+    <script type="text/template" id="results-template">
+		<h3 id="results">Results: </h3>	
+        <div class="result-block">
+	       <div class="question"><span id="resultLabel1">EDD by LMP</span>: <span class="aspQ">(ASP01 Q.A8)</span></div>
+           <input id="edd_lmp" class="result_input" readonly>
+	    </div>
+        <div class="result-block" id="ga_lmp_section">
+	       <div class="question"><span id="resultLabel2">GA by LMP:</span></div>
+           <input id="ga_lmp" class="result_input" readonly>
+	    </div>
+		<div class="fullCalculator">
+	        <div class="result-block">
+		       <div class="question"><span id="resultLabel3">Projected EDD:</span> <span class="aspQ">(ASP05 Q.C3)</span></div>
+	           <input id="edd_projected" class="result_input" readonly>
+		    </div>		 
+	        <div class="result-block">
+		       <div class="question"><span id="resultLabel4">GA by Projected EDD</span>: <span class="aspQ">(ASP05 Q.C4)</span></div>
+	           <input id="gestational_age_proj" class="result_input" readonly>
+		    </div> 
+	        <div class="result-block">
+		       <div class="question"><span id="resultLabel5">Last Date to Randomize</span>:<br /> 
+				   <span class="aspQ">(ASP05 Q.C5)</span></div>
+	           <input id="last_randomization_date" class="result_input" readonly>
+		    </div>
+	        <div class="result-block">
+		       <div class="question"><span id="resultLabel6">Bi-Weekly Visits: </span> <a data-toggle="modal" data-target="#visitsModal"><img src="assets/img/dates-list.png" id="full-list" title="Full List"></a></div>
+			   <div><span class="aspQ">(ASP05 Q.C9 <span class="word-and">and</span> <span id="participant">Participant ID Card</span>)</span></div>
+			   <b><span class="labelVisit">Visit</span> 1: </b><input id="visit_1" class="result_input visits" readonly><br />
+			   <b><span class="labelVisit">Visit</span> 2: </b><input id="visit_2" class="result_input visits" readonly><br />
+			   <b><span class="labelVisit">Visit</span> 3: </b><input id="visit_3" class="result_input visits" readonly>
+		    </div>
+			<div class="result-block">
+			  <div><strong><span id="resultLabel8">Eligibility</span>:</strong> <span class="aspQ">(ASP05 Q.C6 <span class="word-and">and</span> ASP05 Q.C7)</span></div> 	 
+			  <div id="eligible-msg"> 
+				<div id="eligibility"> </div>
+				<div id="patient-kit"> </div>
+			  </div>	
+			</div>
+		</div>
+    </script>
+
+    <script src="./assets/js/vendor/jquery.js"></script>
+    <script src="./assets/js/vendor/jquery-ui-1.10.3.js"></script>
+    <script src="./assets/js/vendor/json2.js"></script>
+    <script src="./assets/js/vendor/underscore.js"></script>
+    <script src="./assets/js/vendor/backbone.js"></script>
+    <script src="./assets/js/vendor/backbone.picky.js"></script>
+    <script src="./assets/js/vendor/backbone.syphon.js"></script>
+    <script src="./assets/js/vendor/backbone.localstorage.js"></script>
+    <script src="./assets/js/vendor/backbone.marionette.js"></script>
+    <script src="./assets/js/vendor/spin.js"></script>
+    <script src="./assets/js/vendor/spin.jquery.js"></script>
+
+    <script src="./assets/js/apps/localization.js"></script>
+	<script src="./assets/js/apps/application.js"></script>
+	
+    <script type="text/javascript">
+	  $(function() {
+	     $("#english").show();
+	 	var curlang;
+	   
+	 	$('.datepicker').datepicker({
+	 		changeMonth: true,
+	 		changeYear: true,
+	 		dateFormat: 'dd-mm-yy'	
+	 	});
+		$("#html-text").load("help.html");
+		$(".close").click(function(){
+		    $(".bs-alert").hide();
+		  });
+	  });
+	  	 
+	  var EddApp = new Marionette.Application();
+	  
+	  EddApp.addRegions({
+		  headerRegion: "#header-region",
+		  iconRegion: "#menu-icons",
+		  inputRegion: "#input-box",
+		  resultRegion: "#calc-result"
+	  });
+	  
+	  EddApp.HeaderView = Marionette.ItemView.extend({
+	      template: "#header-template"
+	  });
+	  
+	  EddApp.IconsView = Marionette.ItemView.extend({
+	      template: "#menuIcons-template"
+	  });
+	  
+	  EddApp.InputsView = Marionette.ItemView.extend({
+	      template: "#inputs-template"
+	  });
+	  
+	  EddApp.ResultsView = Marionette.ItemView.extend({
+	      template: "#results-template"
+	  });
+	  
+	  EddApp.on("initialize:after", function(){ 
+		  var headerView = new EddApp.HeaderView(); 
+		  var iconsView = new EddApp.IconsView();
+		  var inputsView = new EddApp.InputsView();
+		  var resultsView = new EddApp.ResultsView();
+		  
+		  EddApp.headerRegion.show(headerView);
+		  EddApp.iconRegion.show(iconsView);
+		  EddApp.inputRegion.show(inputsView);
+		  EddApp.resultRegion.show(resultsView);
+	    });
+	  
+      EddApp.start();
+    </script>
+  </body>
+</html>
