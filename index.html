@@ -24,6 +24,7 @@
 			 <div class="col-xs-7 col-md-6"> 
 			    <div id="calc-result"></div>
 			 </div>
+			 <div class="col-xs-1 col-md-1"></div>
    		     <br />
          	 <div class="err-alert">
          	    <div class="alert alert-danger">
@@ -222,12 +223,13 @@
     <script src="./assets/js/vendor/spin.js"></script>
     <script src="./assets/js/vendor/spin.jquery.js"></script>
 
+    <script src="./assets/js/app.js"></script>
     <script src="./assets/js/apps/localization.js"></script>
 	<script src="./assets/js/apps/application.js"></script>
+	<script src="./assets/js/entities/language.js"></script>
 	
     <script type="text/javascript">
-	  $(function() {
-	     $("#english").show();
+	  $(document).ready(function() {
 	 	var curlang;
 	   
 	 	$('.datepicker').datepicker({
@@ -239,44 +241,8 @@
 		$(".close").click(function(){
 		    $(".bs-alert").hide();
 		  });
+		$("#calculate").trigger("click");
 	  });
-	  	 
-	  var EddApp = new Marionette.Application();
-	  
-	  EddApp.addRegions({
-		  headerRegion: "#header-region",
-		  iconRegion: "#menu-icons",
-		  inputRegion: "#input-box",
-		  resultRegion: "#calc-result"
-	  });
-	  
-	  EddApp.HeaderView = Marionette.ItemView.extend({
-	      template: "#header-template"
-	  });
-	  
-	  EddApp.IconsView = Marionette.ItemView.extend({
-	      template: "#menuIcons-template"
-	  });
-	  
-	  EddApp.InputsView = Marionette.ItemView.extend({
-	      template: "#inputs-template"
-	  });
-	  
-	  EddApp.ResultsView = Marionette.ItemView.extend({
-	      template: "#results-template"
-	  });
-	  
-	  EddApp.on("initialize:after", function(){ 
-		  var headerView = new EddApp.HeaderView(); 
-		  var iconsView = new EddApp.IconsView();
-		  var inputsView = new EddApp.InputsView();
-		  var resultsView = new EddApp.ResultsView();
-		  
-		  EddApp.headerRegion.show(headerView);
-		  EddApp.iconRegion.show(iconsView);
-		  EddApp.inputRegion.show(inputsView);
-		  EddApp.resultRegion.show(resultsView);
-	    });
 	  
       EddApp.start();
     </script>
