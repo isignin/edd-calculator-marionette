@@ -13,8 +13,10 @@
   var current_date, lmp_date, us_date, ga_us_weeks, ga_us_days, randomize_date;
   var edd_lmp, edd_us, edd_projected, ga_lmp, ga_us, ga_us_proj, ga_final, lmp_us, edd_lmp_only;
   var version;
-  
+
+
   $("#calculate").click(function(){
+	  alert("Calculate pressed");
 	  current_date = convertToDate($('#current_date').val());
 	  if(edd_lmp_only){
 		  if ($('#lmp_date').val() !== "") {
